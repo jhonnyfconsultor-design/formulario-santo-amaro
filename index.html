@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Conquiste seu Apartamento · Santo Amaro</title>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{--brand:#1B6CA8;--brand-dark:#0F4A7A;--brand-light:#E8F3FC;--dark:#111827;--muted:#6B7280;--border:#E5E7EB;--bg:#F9FAFB;--white:#FFFFFF;--green:#16A34A;--red:#DC2626}
+html{scroll-behavior:smooth}
+body{font-family:'Sora',sans-serif;background:var(--bg);color:var(--dark);min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:1.5rem}
+.card{background:var(--white);border-radius:20px;box-shadow:0 4px 24px rgba(0,0,0,0.08);width:100%;max-width:480px;overflow:hidden}
+.card-header{background:linear-gradient(135deg,var(--brand-dark) 0%,var(--brand) 100%);padding:2rem 2rem 1.5rem;text-align:center;position:relative}
+.header-badge{display:inline-block;background:rgba(255,255,255,0.15);color:#fff;font-size:11px;font-weight:500;letter-spacing:2px;text-transform:uppercase;padding:4px 14px;border-radius:100px;margin-bottom:0.875rem}
+.header-title{font-size:22px;font-weight:600;color:#fff;line-height:1.3;margin-bottom:0.375rem}
+.header-sub{font-size:13px;font-weight:300;color:rgba(255,255,255,0.75);line-height:1.6}
+.progress-wrap{padding:1.25rem 2rem 0}
+.progress-label{display:flex;justify-content:space-between;font-size:11px;color:var(--muted);margin-bottom:6px}
+.progress-bar{height:4px;background:var(--border);border-radius:100px;overflow:hidden}
+.progress-fill{height:100%;background:var(--brand);border-radius:100px;transition:width 0.4s ease}
+.card-body{padding:1.75rem 2rem 2rem}
+.step{display:none}
+.step.active{display:block}
+.step-icon{width:48px;height:48px;border-radius:14px;background:var(--brand-light);display:flex;align-items:center;justify-content:center;margin-bottom:1rem;font-size:22px}
+.step-num{font-size:11px;font-weight:500;letter-spacing:2px;text-transform:uppercase;color:var(--brand);margin-bottom:0.375rem}
+.step-q{font-size:17px;font-weight:600;color:var(--dark);line-height:1.4;margin-bottom:0.375rem}
+.step-hint{font-size:13px;color:var(--muted);line-height:1.5;margin-bottom:1.25rem}
+.options{display:flex;flex-direction:column;gap:10px}
+.opt{display:flex;align-items:center;gap:12px;padding:13px 16px;border:1.5px solid var(--border);border-radius:12px;cursor:pointer;transition:all 0.2s;background:var(--white);text-align:left;width:100%;font-family:'Sora',sans-serif}
+.opt:hover{border-color:var(--brand);background:var(--brand-light)}
+.opt.selected{border-color:var(--brand);background:var(--brand-light)}
+.opt-icon{width:36px;height:36px;border-radius:10px;background:var(--bg);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;transition:background 0.2s}
+.opt.selected .opt-icon{background:var(--brand)}
+.opt-text{flex:1}
+.opt-label{font-size:14px;font-weight:500;color:var(--dark);display:block}
+.opt-sub{font-size:12px;color:var(--muted);display:block;margin-top:1px}
+.opt-check{width:20px;height:20px;border-radius:50%;border:2px solid var(--border);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all 0.2s}
+.opt.selected .opt-check{background:var(--brand);border-color:var(--brand)}
+.opt.selected .opt-check::after{content:'';display:block;width:6px;height:6px;background:#fff;border-radius:50%}
+.options-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.opt-grid{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;padding:16px 12px;border:1.5px solid var(--border);border-radius:12px;cursor:pointer;transition:all 0.2s;background:var(--white);text-align:center;width:100%;font-family:'Sora',sans-serif}
+.opt-grid:hover{border-color:var(--brand);background:var(--brand-light)}
+.opt-grid.selected{border-color:var(--brand);background:var(--brand-light)}
+.opt-grid-icon{font-size:24px}
+.opt-grid-label{font-size:13px;font-weight:500;color:var(--dark);line-height:1.3}
+.reject-box{text-align:center;padding:1rem 0}
+.reject-icon{font-size:48px;margin-bottom:1rem;display:block}
+.reject-title{font-size:18px;font-weight:600;color:var(--dark);margin-bottom:0.5rem}
+.reject-text{font-size:13px;color:var(--muted);line-height:1.6;max-width:320px;margin:0 auto}
+.field{margin-bottom:12px}
+.field label{display:block;font-size:12px;font-weight:500;color:var(--dark);margin-bottom:5px}
+.field input{width:100%;padding:12px 14px;border:1.5px solid var(--border);border-radius:10px;font-family:'Sora',sans-serif;font-size:14px;color:var(--dark);outline:none;transition:border-color 0.2s;background:var(--white)}
+.field input:focus{border-color:var(--brand)}
+.field input::placeholder{color:#9CA3AF}
+.lgpd-row{display:flex;align-items:flex-start;gap:8px;margin-top:14px}
+.lgpd-row input{margin-top:3px;accent-color:var(--brand);flex-shrink:0}
+.lgpd-row label{font-size:11px;color:var(--muted);line-height:1.6;cursor:pointer}
+.btn-next{width:100%;padding:15px;background:var(--brand);border:none;border-radius:12px;font-family:'Sora',sans-serif;font-size:14px;font-weight:600;color:#fff;cursor:pointer;margin-top:1.25rem;transition:background 0.2s;display:flex;align-items:center;justify-content:center;gap:8px}
+.btn-next:hover{background:var(--brand-dark)}
+.btn-next:disabled{background:#9CA3AF;cursor:not-allowed;opacity:0.7}
+.btn-wpp{width:100%;padding:15px;background:#16A34A;border:none;border-radius:12px;font-family:'Sora',sans-serif;font-size:14px;font-weight:600;color:#fff;cursor:pointer;margin-top:1.25rem;transition:background 0.2s;display:flex;align-items:center;justify-content:center;gap:8px}
+.btn-wpp:hover{background:#15803D}
+.btn-back{background:none;border:none;font-family:'Sora',sans-serif;font-size:13px;color:var(--muted);cursor:pointer;padding:8px 0;display:flex;align-items:center;gap:4px;margin-top:8px}
+.btn-back:hover{color:var(--dark)}
+.success-box{text-align:center;padding:0.5rem 0}
+.success-icon-wrap{width:72px;height:72px;border-radius:50%;background:#DCFCE7;display:flex;align-items:center;justify-content:center;margin:0 auto 1.25rem;font-size:36px}
+.success-title{font-size:20px;font-weight:600;color:var(--dark);margin-bottom:0.5rem}
+.success-text{font-size:13px;color:var(--muted);line-height:1.7;margin-bottom:1.5rem}
+.broker-card{display:flex;align-items:center;gap:12px;padding:12px 14px;background:var(--bg);border-radius:12px;text-align:left}
+.broker-avatar{width:42px;height:42px;border-radius:50%;background:var(--brand);display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:600;color:#fff;flex-shrink:0}
+.broker-name{font-size:13px;font-weight:600;color:var(--dark)}
+.broker-role{font-size:11px;color:var(--muted)}
+.spinner{display:inline-block;width:18px;height:18px;border:2px solid rgba(255,255,255,0.4);border-top-color:#fff;border-radius:50%;animation:spin 0.7s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.error-msg{background:#FEF2F2;border:1px solid #FECACA;border-radius:8px;padding:10px 14px;font-size:13px;color:#991B1B;margin-top:10px;display:none}
+.footer-note{font-size:11px;color:#9CA3AF;text-align:center;margin-top:1.25rem;line-height:1.6;max-width:480px}
+/* instrução webhook */
+.webhook-info{background:#EFF6FF;border:1px solid #BFDBFE;border-radius:10px;padding:12px 14px;margin-bottom:1.25rem;font-size:12px;color:#1E40AF;line-height:1.6}
+.webhook-info code{background:#DBEAFE;padding:2px 6px;border-radius:4px;font-family:monospace;font-size:11px;word-break:break-all}
+@media(max-width:500px){body{padding:1rem;justify-content:flex-start;padding-top:1.5rem}.card-header{padding:1.5rem 1.5rem 1.25rem}.card-body{padding:1.5rem 1.5rem 1.5rem}.progress-wrap{padding:1rem 1.5rem 0}.header-title{font-size:19px}}
+</style>
+</head>
+<body>
+
+<div class="card">
+  <div class="card-header">
+    <span class="header-badge">Zona Sul · São Paulo</span>
+    <h1 class="header-title">Saia do aluguel e conquiste seu apartamento</h1>
+    <p class="header-sub">Responda 4 perguntas rápidas e veja se você se qualifica para as condições especiais de hoje.</p>
+  </div>
+
+  <div class="progress-wrap">
+    <div class="progress-label">
+      <span id="prog-label">Pergunta 1 de 4</span>
+      <span id="prog-pct">25%</span>
+    </div>
+    <div class="progress-bar"><div class="progress-fill" id="prog-fill" style="width:25%"></div></div>
+  </div>
+
+  <div class="card-body">
+
+    <!-- STEP 1 -->
+    <div class="step active" id="step-1">
+      <div class="step-icon">🏠</div>
+      <p class="step-num">Pergunta 1 de 4</p>
+      <h2 class="step-q">Você tem interesse em comprar um apartamento?</h2>
+      <p class="step-hint">Selecione a opção que melhor descreve sua situação atual.</p>
+      <div class="options">
+        <button class="opt" onclick="selectAndNext(this,'q1','Sim - deseja comprar',2)">
+          <span class="opt-icon">✅</span>
+          <span class="opt-text"><span class="opt-label">Sim, quero comprar</span><span class="opt-sub">Estou buscando meu primeiro imóvel</span></span>
+          <span class="opt-check"></span>
+        </button>
+        <button class="opt" onclick="selectAndNext(this,'q1','Não - apenas pesquisando','reject-comprar')">
+          <span class="opt-icon">🔍</span>
+          <span class="opt-text"><span class="opt-label">Não, só estou pesquisando</span><span class="opt-sub">Ainda não decidi comprar</span></span>
+          <span class="opt-check"></span>
+        </button>
+      </div>
+    </div>
+
+    <!-- STEP 2 -->
+    <div class="step" id="step-2">
+      <div class="step-icon">📍</div>
+      <p class="step-num">Pergunta 2 de 4</p>
+      <h2 class="step-q">Você mora ou pretende morar em São Paulo?</h2>
+      <p class="step-hint">Os imóveis desta campanha estão na Zona Sul de São Paulo.</p>
+      <div class="options">
+        <button class="opt" onclick="selectAndNext(this,'q2','Sim - São Paulo',3)">
+          <span class="opt-icon">🌆</span>
+          <span class="opt-text"><span class="opt-label">Sim, em São Paulo</span><span class="opt-sub">Moro ou quero morar na cidade</span></span>
+          <span class="opt-check"></span>
+        </button>
+        <button class="opt" onclick="selectAndNext(this,'q2','Não - outro estado','reject-estado')">
+          <span class="opt-icon">🗺️</span>
+          <span class="opt-text"><span class="opt-label">Não, sou de outro estado</span><span class="opt-sub">Resido fora de São Paulo</span></span>
+          <span class="opt-check"></span>
+        </button>
+      </div>
+      <button class="btn-back" onclick="goBack(1)">← Voltar</button>
+    </div>
+
+    <!-- STEP 3 -->
+    <div class="step" id="step-3">
+      <div class="step-icon">💰</div>
+      <p class="step-num">Pergunta 3 de 4</p>
+      <h2 class="step-q">Qual é a sua faixa de renda familiar mensal?</h2>
+      <p class="step-hint">Considere a renda de todos que vão compor o financiamento.</p>
+      <div class="options-grid">
+        <button class="opt-grid" onclick="selectGridAndNext(this,'q3','Até R$ 3.200',4)">
+          <span class="opt-grid-icon">💵</span><span class="opt-grid-label">Até R$ 3.200</span>
+        </button>
+        <button class="opt-grid" onclick="selectGridAndNext(this,'q3','R$ 3.200 a R$ 5.000',4)">
+          <span class="opt-grid-icon">💵</span><span class="opt-grid-label">R$ 3.200 a R$ 5.000</span>
+        </button>
+        <button class="opt-grid" onclick="selectGridAndNext(this,'q3','R$ 5.000 a R$ 9.600',4)">
+          <span class="opt-grid-icon">💵</span><span class="opt-grid-label">R$ 5.000 a R$ 9.600</span>
+        </button>
+        <button class="opt-grid" onclick="selectGridAndNext(this,'q3','Acima de R$ 9.600','reject-renda')">
+          <span class="opt-grid-icon">💵</span><span class="opt-grid-label">Acima de R$ 9.600</span>
+        </button>
+      </div>
+      <button class="btn-back" onclick="goBack(2)">← Voltar</button>
+    </div>
+
+    <!-- STEP 4 -->
+    <div class="step" id="step-4">
+      <div class="step-icon">🎂</div>
+      <p class="step-num">Pergunta 4 de 4</p>
+      <h2 class="step-q">Qual é a sua faixa de idade?</h2>
+      <p class="step-hint">Necessário para verificar as condições do financiamento.</p>
+      <div class="options-grid">
+        <button class="opt-grid" onclick="selectGridAndNext(this,'q4','18 a 25 anos','contact')">
+          <span class="opt-grid-icon">🧑</span><span class="opt-grid-label">18 a 25 anos</span>
+        </button>
+        <button class="opt-grid" onclick="selectGridAndNext(this,'q4','26 a 35 anos','contact')">
+          <span class="opt-grid-icon">🧑</span><span class="opt-grid-label">26 a 35 anos</span>
+        </button>
+        <button class="opt-grid" onclick="selectGridAndNext(this,'q4','36 a 45 anos','contact')">
+          <span class="opt-grid-icon">🧑</span><span class="opt-grid-label">36 a 45 anos</span>
+        </button>
+        <button class="opt-grid" onclick="selectGridAndNext(this,'q4','46 a 55 anos','contact')">
+          <span class="opt-grid-icon">🧑</span><span class="opt-grid-label">46 a 55 anos</span>
+        </button>
+        <button class="opt-grid" onclick="selectGridAndNext(this,'q4','Acima de 56 anos','reject-idade')" style="grid-column:span 2">
+          <span class="opt-grid-icon">🧓</span><span class="opt-grid-label">Acima de 56 anos</span>
+        </button>
+      </div>
+      <button class="btn-back" onclick="goBack(3)">← Voltar</button>
+    </div>
+
+    <!-- CONTATO -->
+    <div class="step" id="step-contact">
+      <div class="step-icon">🎉</div>
+      <p class="step-num" style="color:var(--green)">Você se qualificou!</p>
+      <h2 class="step-q">Ótimo! Agora só precisamos do seu contato</h2>
+      <p class="step-hint">Preencha abaixo para receber as condições exclusivas do seu apartamento.</p>
+
+      <!-- INSTRUÇÃO WEBHOOK — REMOVA ESTE BLOCO APÓS CONFIGURAR -->
+      <div class="webhook-info" id="webhook-instrucao">
+        <strong>⚙️ Configuração necessária (apenas para você):</strong><br>
+        No Imobilead, vá em <strong>Integrações → Adicionar integração → Webhook</strong>, crie uma integração e substitua no código abaixo:<br><br>
+        <code>SEU-CODIGO-AQUI</code><br><br>
+        Após inserir o código real, apague este aviso removendo o elemento com id <code>webhook-instrucao</code>.
+      </div>
+
+      <div class="field">
+        <label>Nome completo</label>
+        <input type="text" id="f-nome" placeholder="Seu nome completo">
+      </div>
+      <div class="field">
+        <label>WhatsApp com DDD</label>
+        <input type="tel" id="f-tel" placeholder="(11) 9 0000-0000">
+      </div>
+      <div class="lgpd-row">
+        <input type="checkbox" id="lgpd">
+        <label for="lgpd">Autorizo o uso dos meus dados para fins de atendimento imobiliário, conforme a LGPD.</label>
+      </div>
+      <div class="error-msg" id="error-msg">Não foi possível enviar. Verifique sua conexão e tente novamente.</div>
+      <button class="btn-next" id="btn-submit" onclick="submitLead()">Ver condições exclusivas →</button>
+      <button class="btn-back" onclick="goBack(4)">← Voltar</button>
+    </div>
+
+    <!-- SUCESSO -->
+    <div class="step" id="step-success">
+      <div class="success-box">
+        <div class="success-icon-wrap">🎊</div>
+        <h2 class="success-title">Perfeito! Você foi aprovado</h2>
+        <p class="success-text">Seu perfil se encaixa nas condições do programa. Clique abaixo para falar agora com o corretor e receber as oportunidades disponíveis na Zona Sul.</p>
+        <div class="broker-card">
+          <div class="broker-avatar">JF</div>
+          <div>
+            <div class="broker-name">Jhonny Fernandes · CRECI</div>
+            <div class="broker-role">Especialista MCMV · Zona Sul SP</div>
+          </div>
+        </div>
+        <button class="btn-wpp" onclick="openWpp()">💬 Falar no WhatsApp agora</button>
+      </div>
+    </div>
+
+    <!-- REJEIÇÕES -->
+    <div class="step" id="step-reject-comprar">
+      <div class="reject-box">
+        <span class="reject-icon">👋</span>
+        <h2 class="reject-title">Sem problemas!</h2>
+        <p class="reject-text">Quando você estiver pronto para dar esse passo, estaremos aqui. Volte quando quiser saber mais sobre as condições do programa.</p>
+      </div>
+    </div>
+
+    <div class="step" id="step-reject-estado">
+      <div class="reject-box">
+        <span class="reject-icon">📍</span>
+        <h2 class="reject-title">Essa campanha é para São Paulo</h2>
+        <p class="reject-text">Por enquanto nossos imóveis são na Zona Sul de SP. Se conhecer alguém buscando apartamento na região, pode indicar!</p>
+      </div>
+    </div>
+
+    <div class="step" id="step-reject-renda">
+      <div class="reject-box">
+        <span class="reject-icon">🏦</span>
+        <h2 class="reject-title">Esse programa não é o ideal para você</h2>
+        <p class="reject-text">Com renda acima de R$ 9.600, o Minha Casa Minha Vida não se aplica ao seu perfil. Mas existem ótimas opções fora do programa!</p>
+        <button class="btn-wpp" onclick="openWppSemFiltro()" style="margin-top:1.25rem">💬 Quero conhecer outras opções</button>
+      </div>
+    </div>
+
+    <div class="step" id="step-reject-idade">
+      <div class="reject-box">
+        <span class="reject-icon">📋</span>
+        <h2 class="reject-title">Atenção: restrição de crédito</h2>
+        <p class="reject-text">A Caixa Econômica possui restrições de prazo para financiamento neste programa para idades acima de 56 anos. Mas posso verificar outras modalidades para você.</p>
+        <button class="btn-wpp" onclick="openWppSemFiltro()" style="margin-top:1.25rem">💬 Quero verificar opções</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<p class="footer-note">🔒 Seus dados são protegidos pela LGPD e nunca serão compartilhados com terceiros.</p>
+
+<script>
+// ─────────────────────────────────────────────
+// CONFIGURAÇÃO — substitua pelo seu código real
+// ─────────────────────────────────────────────
+const IMOBILEAD_WEBHOOK = 'https://app.imobilead.me/integrate-api/integracoes/webhook/SEU-CODIGO-AQUI';
+const PRODUTO = 'MCMV - Santo Amaro';
+const WHATSAPP = '5511959412155';
+// ─────────────────────────────────────────────
+
+const answers = {};
+
+function showStep(id) {
+  document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
+  const el = document.getElementById('step-' + id);
+  if (el) el.classList.add('active');
+  updateProgress(id);
+  window.scrollTo({top: 0, behavior: 'smooth'});
+}
+
+function updateProgress(id) {
+  const pctMap = {1:25, 2:50, 3:75, 4:100, 'contact':100};
+  const lblMap = {1:'Pergunta 1 de 4', 2:'Pergunta 2 de 4', 3:'Pergunta 3 de 4', 4:'Pergunta 4 de 4', 'contact':'Quase lá!'};
+  const fill = document.getElementById('prog-fill');
+  const pct = pctMap[id];
+  if (pct) {
+    fill.style.width = pct + '%';
+    fill.style.background = 'var(--brand)';
+    document.getElementById('prog-pct').textContent = pct + '%';
+  }
+  if (lblMap[id]) document.getElementById('prog-label').textContent = lblMap[id];
+  if (typeof id === 'string' && id.startsWith('reject')) {
+    document.getElementById('prog-label').textContent = 'Formulário encerrado';
+    document.getElementById('prog-pct').textContent = '';
+    fill.style.width = '100%';
+    fill.style.background = '#DC2626';
+  }
+  if (id === 'success') {
+    fill.style.width = '100%';
+    fill.style.background = '#16A34A';
+    document.getElementById('prog-label').textContent = 'Aprovado!';
+    document.getElementById('prog-pct').textContent = '✓';
+  }
+}
+
+function selectAndNext(btn, key, val, next) {
+  btn.closest('.options').querySelectorAll('.opt').forEach(b => b.classList.remove('selected'));
+  btn.classList.add('selected');
+  answers[key] = val;
+  setTimeout(() => showStep(next), 280);
+}
+
+function selectGridAndNext(btn, key, val, next) {
+  btn.closest('.options-grid').querySelectorAll('.opt-grid').forEach(b => b.classList.remove('selected'));
+  btn.classList.add('selected');
+  answers[key] = val;
+  setTimeout(() => showStep(next), 280);
+}
+
+function goBack(to) { showStep(to); }
+
+async function submitLead() {
+  const nome = document.getElementById('f-nome').value.trim();
+  const tel = document.getElementById('f-tel').value.trim();
+  const lgpd = document.getElementById('lgpd').checked;
+  const errEl = document.getElementById('error-msg');
+  const btn = document.getElementById('btn-submit');
+
+  errEl.style.display = 'none';
+  if (!nome || !tel) { errEl.textContent = 'Preencha seu nome e WhatsApp para continuar.'; errEl.style.display = 'block'; return; }
+  if (!lgpd) { errEl.textContent = 'Aceite os termos de uso de dados para continuar.'; errEl.style.display = 'block'; return; }
+
+  answers['nome'] = nome;
+  answers['tel'] = tel;
+
+  // Monta observação com qualificação completa
+  const obs = [
+    'Origem: Formulário Santo Amaro',
+    'Quer comprar: ' + (answers['q1'] || '-'),
+    'Localização: ' + (answers['q2'] || '-'),
+    'Renda familiar: ' + (answers['q3'] || '-'),
+    'Faixa de idade: ' + (answers['q4'] || '-')
+  ].join(' | ');
+
+  const payload = {
+    nome: nome,
+    telefone: tel.replace(/\D/g, ''),
+    produto: PRODUTO,
+    observacao: obs
+  };
+
+  // Loading
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spinner"></span> Enviando...';
+
+  try {
+    const resp = await fetch(IMOBILEAD_WEBHOOK, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    });
+
+    if (resp.ok || resp.status === 200) {
+      showStep('success');
+    } else {
+      throw new Error('status ' + resp.status);
+    }
+  } catch (e) {
+    // Fallback: mesmo com erro de rede, avança (evita perder o lead)
+    console.warn('Webhook falhou, avançando mesmo assim:', e);
+    showStep('success');
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = 'Ver condições exclusivas →';
+  }
+}
+
+function openWpp() {
+  const nome = answers['nome'] || '';
+  const renda = answers['q3'] || '';
+  const idade = answers['q4'] || '';
+  let msg = 'Olá Jhonny! Me chamo *' + nome + '* e acabei de preencher o formulário de Santo Amaro.\n\n';
+  if (renda) msg += '💰 Renda: ' + renda + '\n';
+  if (idade) msg += '🎂 Idade: ' + idade + '\n';
+  msg += '\nGostaria de saber mais sobre os apartamentos disponíveis!';
+  window.open('https://wa.me/' + WHATSAPP + '?text=' + encodeURIComponent(msg), '_blank');
+}
+
+function openWppSemFiltro() {
+  const msg = 'Olá Jhonny! Preenchi o formulário de Santo Amaro mas não me encaixei no MCMV. Gostaria de conhecer outras opções.';
+  window.open('https://wa.me/' + WHATSAPP + '?text=' + encodeURIComponent(msg), '_blank');
+}
+
+showStep(1);
+</script>
+</body>
+</html>
