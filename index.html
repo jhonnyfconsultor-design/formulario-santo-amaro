@@ -157,7 +157,7 @@ body{font-family:'Sora',sans-serif;background:var(--bg);color:var(--dark);min-he
         <button class="opt-grid" onclick="selectGridAndNext(this,'q3','R$ 5.000 a R$ 9.600',4)">
           <span class="opt-grid-icon">💵</span><span class="opt-grid-label">R$ 5.000 a R$ 9.600</span>
         </button>
-        <button class="opt-grid" onclick="selectGridAndNext(this,'q3','Acima de R$ 9.600','reject-renda')">
+        <button class="opt-grid" onclick="selectGridAndNext(this,'q3','Acima de R$ 9.600',4)">
           <span class="opt-grid-icon">💵</span><span class="opt-grid-label">Acima de R$ 9.600</span>
         </button>
       </div>
@@ -197,13 +197,7 @@ body{font-family:'Sora',sans-serif;background:var(--bg);color:var(--dark);min-he
       <h2 class="step-q">Ótimo! Agora só precisamos do seu contato</h2>
       <p class="step-hint">Preencha abaixo para receber as condições exclusivas do seu apartamento.</p>
 
-      <!-- INSTRUÇÃO WEBHOOK — REMOVA ESTE BLOCO APÓS CONFIGURAR -->
-      <div class="webhook-info" id="webhook-instrucao">
-        <strong>⚙️ Configuração necessária (apenas para você):</strong><br>
-        No Imobilead, vá em <strong>Integrações → Adicionar integração → Webhook</strong>, crie uma integração e substitua no código abaixo:<br><br>
-        <code>SEU-CODIGO-AQUI</code><br><br>
-        Após inserir o código real, apague este aviso removendo o elemento com id <code>webhook-instrucao</code>.
-      </div>
+      
 
       <div class="field">
         <label>Nome completo</label>
@@ -229,10 +223,10 @@ body{font-family:'Sora',sans-serif;background:var(--bg);color:var(--dark);min-he
         <h2 class="success-title">Perfeito! Você foi aprovado</h2>
         <p class="success-text">Seu perfil se encaixa nas condições do programa. Clique abaixo para falar agora com o corretor e receber as oportunidades disponíveis na Zona Sul.</p>
         <div class="broker-card">
-          <div class="broker-avatar">JF</div>
+          <div class="broker-avatar">AC</div>
           <div>
-            <div class="broker-name">Jhonny Fernandes · CRECI</div>
-            <div class="broker-role">Especialista MCMV · Zona Sul SP</div>
+            <div class="broker-name">Adriano Consultor</div>
+            <div class="broker-role">Especialista em Imóveis · Lavvi</div>
           </div>
         </div>
         <button class="btn-wpp" onclick="openWpp()">💬 Falar no WhatsApp agora</button>
@@ -283,9 +277,9 @@ body{font-family:'Sora',sans-serif;background:var(--bg);color:var(--dark);min-he
 // ─────────────────────────────────────────────
 // CONFIGURAÇÃO — substitua pelo seu código real
 // ─────────────────────────────────────────────
-const IMOBILEAD_WEBHOOK = 'https://app.imobilead.me/integrate-api/integracoes/webhook/SEU-CODIGO-AQUI';
+const IMOBILEAD_WEBHOOK = 'https://app.imobilead.me/integrate-api/integracoes/webhook/cb32c1fa5204366b6869d711be2a55d3';
 const PRODUTO = 'MCMV - Santo Amaro';
-const WHATSAPP = '5511959412155';
+const WHATSAPP = '5511911469355';
 // ─────────────────────────────────────────────
 
 const answers = {};
@@ -399,7 +393,7 @@ function openWpp() {
   const nome = answers['nome'] || '';
   const renda = answers['q3'] || '';
   const idade = answers['q4'] || '';
-  let msg = 'Olá Jhonny! Me chamo *' + nome + '* e acabei de preencher o formulário de Santo Amaro.\n\n';
+  let msg = 'Olá Adriano! Me chamo *' + nome + '* e acabei de preencher o formulário de Santo Amaro.\n\n';
   if (renda) msg += '💰 Renda: ' + renda + '\n';
   if (idade) msg += '🎂 Idade: ' + idade + '\n';
   msg += '\nGostaria de saber mais sobre os apartamentos disponíveis!';
@@ -407,7 +401,7 @@ function openWpp() {
 }
 
 function openWppSemFiltro() {
-  const msg = 'Olá Jhonny! Preenchi o formulário de Santo Amaro mas não me encaixei no MCMV. Gostaria de conhecer outras opções.';
+  const msg = 'Olá Adriano! Preenchi o formulário de Santo Amaro mas não me encaixei no MCMV. Gostaria de conhecer outras opções.';
   window.open('https://wa.me/' + WHATSAPP + '?text=' + encodeURIComponent(msg), '_blank');
 }
 
