@@ -3,6 +3,25 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- Meta Pixel Code -->
+<script>
+!function(f,b,e,v,n,t,s)
+{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];
+s.parentNode.insertBefore(t,s)}(window, document,'script',
+'https://connect.facebook.net/en_US/fbevents.js');
+fbq('init', '2782969208702533');
+fbq('track', 'PageView');
+</script>
+<noscript><img height="1" width="1" style="display:none"
+src="https://www.facebook.com/tr?id=2782969208702533&ev=PageView&noscript=1"/>
+</noscript>
+<!-- End Meta Pixel Code -->
+
 <title>Conquiste seu Apartamento · Santo Amaro</title>
 <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
@@ -75,9 +94,6 @@ body{font-family:'Sora',sans-serif;background:var(--bg);color:var(--dark);min-he
 @keyframes spin{to{transform:rotate(360deg)}}
 .error-msg{background:#FEF2F2;border:1px solid #FECACA;border-radius:8px;padding:10px 14px;font-size:13px;color:#991B1B;margin-top:10px;display:none}
 .footer-note{font-size:11px;color:#9CA3AF;text-align:center;margin-top:1.25rem;line-height:1.6;max-width:480px}
-/* instrução webhook */
-.webhook-info{background:#EFF6FF;border:1px solid #BFDBFE;border-radius:10px;padding:12px 14px;margin-bottom:1.25rem;font-size:12px;color:#1E40AF;line-height:1.6}
-.webhook-info code{background:#DBEAFE;padding:2px 6px;border-radius:4px;font-family:monospace;font-size:11px;word-break:break-all}
 @media(max-width:500px){body{padding:1rem;justify-content:flex-start;padding-top:1.5rem}.card-header{padding:1.5rem 1.5rem 1.25rem}.card-body{padding:1.5rem 1.5rem 1.5rem}.progress-wrap{padding:1rem 1.5rem 0}.header-title{font-size:19px}}
 </style>
 </head>
@@ -196,9 +212,6 @@ body{font-family:'Sora',sans-serif;background:var(--bg);color:var(--dark);min-he
       <p class="step-num" style="color:var(--green)">Você se qualificou!</p>
       <h2 class="step-q">Ótimo! Agora só precisamos do seu contato</h2>
       <p class="step-hint">Preencha abaixo para receber as condições exclusivas do seu apartamento.</p>
-
-      
-
       <div class="field">
         <label>Nome completo</label>
         <input type="text" id="f-nome" placeholder="Seu nome completo">
@@ -211,7 +224,7 @@ body{font-family:'Sora',sans-serif;background:var(--bg);color:var(--dark);min-he
         <input type="checkbox" id="lgpd">
         <label for="lgpd">Autorizo o uso dos meus dados para fins de atendimento imobiliário, conforme a LGPD.</label>
       </div>
-      <div class="error-msg" id="error-msg">Não foi possível enviar. Verifique sua conexão e tente novamente.</div>
+      <div class="error-msg" id="error-msg"></div>
       <button class="btn-next" id="btn-submit" onclick="submitLead()">Ver condições exclusivas →</button>
       <button class="btn-back" onclick="goBack(4)">← Voltar</button>
     </div>
@@ -274,13 +287,9 @@ body{font-family:'Sora',sans-serif;background:var(--bg);color:var(--dark);min-he
 <p class="footer-note">🔒 Seus dados são protegidos pela LGPD e nunca serão compartilhados com terceiros.</p>
 
 <script>
-// ─────────────────────────────────────────────
-// CONFIGURAÇÃO — substitua pelo seu código real
-// ─────────────────────────────────────────────
 const IMOBILEAD_WEBHOOK = 'https://app.imobilead.me/integrate-api/integracoes/webhook/cb32c1fa5204366b6869d711be2a55d3';
 const PRODUTO = 'MCMV - Santo Amaro';
 const WHATSAPP = '5511911469355';
-// ─────────────────────────────────────────────
 
 const answers = {};
 
@@ -347,7 +356,6 @@ async function submitLead() {
   answers['nome'] = nome;
   answers['tel'] = tel;
 
-  // Monta observação com qualificação completa
   const obs = [
     'Origem: Formulário Santo Amaro',
     'Quer comprar: ' + (answers['q1'] || '-'),
@@ -363,9 +371,11 @@ async function submitLead() {
     observacao: obs
   };
 
-  // Loading
   btn.disabled = true;
   btn.innerHTML = '<span class="spinner"></span> Enviando...';
+
+  // Dispara evento Lead para o Meta Pixel
+  fbq('track', 'Lead');
 
   try {
     const resp = await fetch(IMOBILEAD_WEBHOOK, {
@@ -373,14 +383,12 @@ async function submitLead() {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(payload)
     });
-
     if (resp.ok || resp.status === 200) {
       showStep('success');
     } else {
       throw new Error('status ' + resp.status);
     }
   } catch (e) {
-    // Fallback: mesmo com erro de rede, avança (evita perder o lead)
     console.warn('Webhook falhou, avançando mesmo assim:', e);
     showStep('success');
   } finally {
